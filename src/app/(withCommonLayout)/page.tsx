@@ -1,11 +1,10 @@
-import { Button } from "@mui/material";
+import HeroSection from "@/components/UI/HomePage/HeroSection/HeroSection";
 
 const HomePage = () => {
   return (
-    <div>
-      <h1>This is Home Page</h1>
-      <Button variant="contained">Contained</Button>
-    </div>
+    <>
+      <HeroSection />
+    </>
   );
 };
 
