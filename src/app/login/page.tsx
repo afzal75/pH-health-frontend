@@ -3,43 +3,31 @@ import { Container, Stack, Box, Typography, Grid, TextField, Button } from "@mui
 import Image from "next/image";
 import assets from '@/assets'
 import Link from "next/link";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { userLogin } from "@/services/actions/userLogin";
 import { toast } from "sonner";
 import { storeUserInfo } from "@/services/auth.services";
 import { useRouter } from "next/navigation";
-
-export type FormValues = {
-    email: string;
-    password: string
-}
+import PHForm from "@/components/Forms/PHForm";
+import PHInput from "@/components/Forms/PHInput";
 
 const LoginPage = () => {
     const router = useRouter()
-    const {
-        register,
-        handleSubmit,
-        watch,
-        formState: { errors },
-    } = useForm<FormValues>()
+    const handleLogin = async (values: FieldValues) => {
 
-
-    const
-        onSubmit: SubmitHandler<FormValues> = async (values) => {
-
-            console.log(values)
-            try {
-                const res = await userLogin(values)
-                if (res?.data?.accessToken) {
-                    toast.success(res.message)
-                    storeUserInfo({ accessToken: res?.data?.accessToken })
-                    router.push('/')
-                }
-            }
-            catch (err: any) {
-                console.error(err.message)
+        console.log(values)
+        try {
+            const res = await userLogin(values)
+            if (res?.data?.accessToken) {
+                toast.success(res.message)
+                storeUserInfo({ accessToken: res?.data?.accessToken })
+                router.push('/')
             }
         }
+        catch (err: any) {
+            console.error(err.message)
+        }
+    }
     return (
         <Container>
             <Stack sx={{
@@ -76,26 +64,24 @@ const LoginPage = () => {
                         </Box>
                     </Stack>
                     <Box>
-                        <form onSubmit={handleSubmit(onSubmit)}>
+                        <PHForm onSubmit={handleLogin}>
                             <Grid container spacing={2} my={2}>
                                 <Grid item md={6}>
-                                    <TextField
+                                    <PHInput
+                                        name="email"
                                         label="Email"
                                         type="email"
-                                        variant="outlined"
                                         size="small"
                                         fullWidth={true}
-                                        {...register("email")}
                                     />
                                 </Grid>
                                 <Grid item md={6}>
-                                    <TextField
+                                    <PHInput
+                                        name="password"
                                         label="Password"
                                         type="password"
-                                        variant="outlined"
                                         size="small"
                                         fullWidth={true}
-                                        {...register("password")}
 
                                     />
                                 </Grid>
@@ -116,7 +102,7 @@ const LoginPage = () => {
                                 Don&apos; have an account?
                                 <Link href="/register"> Create an Account</Link>
                             </Typography>
-                        </form>
+                        </PHForm>
                     </Box>
                 </Box>
             </Stack>
