@@ -26,6 +26,8 @@ export type ResponseSuccessType = {
     meta?: IMeta
 }
 
+export const Gender = ["MALE", "FEMALE"];
+
 export interface DrawerItem {
     title: string;
     path: string;

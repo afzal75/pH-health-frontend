@@ -6,6 +6,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useDeleteSpecialtyMutation, useGetAllSpecialtiesQuery } from "@/redux/api/specialitiesApi";
 import Image from "next/image";
 import DeleteIcon from '@mui/icons-material/Delete';
+import { toast } from "sonner";
 
 
 const SpecialtiesPage = () => {
@@ -18,7 +19,9 @@ const SpecialtiesPage = () => {
         console.log(id)
         try {
             const res = await deleteSpecialty(id).unwrap()
-            console.log(res)
+            if (res?.id) {
+                toast.success("Specialty deleted successfully")
+            }
         }
         catch (err: any) {
             console.error(err?.message)
